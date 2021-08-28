@@ -1,10 +1,17 @@
 // Action Creators
-export function fetchAstronauts(astronauts) {
-  return {
-    type: "astronauts/astronautsLoaded",
-    payload: astronauts,
+export function fetchAstronauts() {
+  return function (dispatch) {
+    dispatch({ type: "astronauts/astronautsLoading" });
+    fetch("http://api.open-notify.org/astros.json")
+      .then((response) => response.json())
+      .then((astronauts) =>
+        dispatch({
+          type: "astronauts/astronautsLoaded",
+          payload: astronauts.people,
+        })
+      );
   };
-}
+} 
 
 // Reducers
 const initialState = {
